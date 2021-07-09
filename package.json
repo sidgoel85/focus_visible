@@ -1,5 +1,221 @@
-"dependencies": {
-"focus-visible": "^5.2.0",
-"postcss-focus-visible": "^5.0.0",
-"tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+{
+  "name": "pimco-components",
+  "version": "0.1.0",
+  "private": true,
+  "fundPages": [
+    {
+      "name": "etf",
+      "title": "etf",
+      "appHtml": "public/etf.html",
+      "appIndexJs": "src/etf"
+    },
+    {
+      "name": "mf",
+      "title": "mf",
+      "appHtml": "public/mf.html",
+      "appIndexJs": "src/mf"
+    },
+    {
+      "name": "gis",
+      "title": "gis",
+      "appHtml": "public/gis.html",
+      "appIndexJs": "src/gis"
+    }
+  ],
+  "config": {
+    "assetsPath": "/dist/pimco-components"
+  },
+  "cracoConfig": "config/craco.config.js",
+  "dependencies": {
+    "@craco/craco": "^6.1.2",
+    "@markit/cache": "^2.1.2",
+    "@markit/caddy": "^1.13.1",
+    "@markit/modcharts": "2.0.0-alpha.103",
+    "@popperjs/core": "2.9.1",
+    "@quickbaseoss/babel-plugin-styled-components-css-namespace": "^1.0.1",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^11.2.6",
+    "@testing-library/user-event": "^12.8.3",
+    "autoprefixer": "^9.8.6",
+    "axios": "~0.19.0",
+    "compression": "~1.7.3",
+    "consul": "^0.34.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "~4.16.4",
+    "file-loader": "4.3.0",
+    "file-saver": "^2.0.5",
+    "focus-visible": "^5.2.0",
+    "fs-extra": "^8.1.0",
+    "i18next": "^20.2.2",
+    "i18next-http-backend": "^1.2.4",
+    "ipaddr.js": "~1.8.1",
+    "jest-environment-jsdom-sixteen": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "node-cache": "~4.2.0",
+    "node-fetch": "^2.6.1",
+    "react": "^17.0.2",
+    "react-dates": "^21.8.0",
+    "react-dom": "^17.0.2",
+    "react-i18next": "^11.8.15",
+    "react-modal": "^3.12.1",
+    "react-redux": "^7.2.4",
+    "react-scripts": "4.0.3",
+    "react-swipeable": "^6.1.0",
+    "redux-thunk": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "styled-components": "^5.3.0",
+    "tailwind-scrollbar": "^1.2.4",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
+    "victory": "^35.4.4",
+    "web-vitals": "^1.1.2"
+  },
+  "scripts": {
+    "start": "craco start",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build": "npm-run-all craco copy-files",
+    "build:storybook": "build-storybook -s public",
+    "lint": "eslint --config .eslintrc src/components",
+    "test": "node scripts/test.js --env=jest-environment-jsdom-sixteen",
+    "test:coverage": "node scripts/test.js --env=jest-environment-jsdom-sixteen --coverage --watchAll",
+    "test:development": "node scripts/test.js --env=jest-environment-jsdom-sixteen --coverage --watch",
+    "test:CI": "node scripts/test.js --env=jest-environment-jsdom-sixteen --coverage --watchAll false",
+    "craco": "cross-env-shell PUBLIC_URL=$npm_package_config_assetsPath craco build",
+    "copy-files": "node scripts/copy-build-to-dist.js",
+    "post-script": "node ./global-setup.js",
+    "server": "node scripts/express.js",
+    "caddy": "./node_modules/@markit/caddy/linux_amd64/caddy -conf Caddyfile",
+    "deploy": "npm run post-script && npm run runtime-update && npm run caddy & npm run server",
+    "runtime-update": "node ./runtime-asset-update.js",
+    "e2eTest": "node test/testRunners/e2eTestRunner.js",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src/components"
+    ],
+    "collectCoverageFrom": [
+      "src/components/**/*.{js,jsx,ts,tsx}"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      },
+      "src/components/PortfolioInformation": {
+        "branches": 80,
+        "statements": 80
+      }
+    },
+    "setupFiles": [
+      "react-app-polyfill/jsdom",
+      "jest-canvas-mock"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^6.2.9",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-controls": "^6.2.9",
+    "@storybook/addon-docs": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-knobs": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/addon-viewport": "^6.2.9",
+    "@storybook/node-logger": "^6.2.9",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.2.9",
+    "axios-mock-adapter": "^1.19.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "express-graphql": "^0.12.0",
+    "jest-canvas-mock": "^2.3.1",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^7.0.35",
+    "postcss-focus-visible": "^5.0.0",
+    "postcss-prepend-selector": "^0.3.1",
+    "prettier": "^2.2.1",
+    "testcafe": "^1.14.2",
+    "webpack": "^4.44.2"
+  }
 }
+
