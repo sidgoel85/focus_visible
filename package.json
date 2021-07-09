@@ -1,29 +1,9 @@
 {
-  "name": "pimco-components",
+  "name": "Test",
   "version": "0.1.0",
-  "private": true,
-  "fundPages": [
-    {
-      "name": "etf",
-      "title": "etf",
-      "appHtml": "public/etf.html",
-      "appIndexJs": "src/etf"
-    },
-    {
-      "name": "mf",
-      "title": "mf",
-      "appHtml": "public/mf.html",
-      "appIndexJs": "src/mf"
-    },
-    {
-      "name": "gis",
-      "title": "gis",
-      "appHtml": "public/gis.html",
-      "appIndexJs": "src/gis"
-    }
-  ],
+  "private": true,  
   "config": {
-    "assetsPath": "/dist/pimco-components"
+    "assetsPath": "/dist/Test"
   },
   "cracoConfig": "config/craco.config.js",
   "dependencies": {
